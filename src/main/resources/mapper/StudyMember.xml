@@ -14,4 +14,16 @@
         FROM STUDY_MEMBER S
     </select>
 
+    <select id="selectMemberBySequence" parameterType="int" resultType="StudyMember">
+        SELECT
+            MEMBER_SEQ,
+            MEMBER_NAME,
+            JOIN_DATE,
+            MEMBER_JOB,
+            CREATED_AT,
+            UPDATED_AT
+        FROM STUDY_MEMBER S
+        WHERE S.MEMBER_SEQ = #{memberSeq}
+    </select>
+
 </mapper>

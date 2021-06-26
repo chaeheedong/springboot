@@ -17,4 +17,6 @@ public class StudyMember {
     private String memberJob;
     private String createdAt;
     private String updatedAt;
+
+    
 }

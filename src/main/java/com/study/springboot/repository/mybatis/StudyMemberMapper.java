@@ -9,4 +9,6 @@ import java.util.List;
 public interface StudyMemberMapper {
 
     public List<StudyMember> selectAll();
+
+    public StudyMember selectMemberBySequence(int memberSeq);
 }
