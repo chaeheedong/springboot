@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,8 +71,10 @@ public class StudyMemberController {
         // @Validated
         // BindingResult result
         // @NonNull, @Range등 조건이 부합하면 이쪽으로 들어옴
-        if (result.hasErrors())
-            throw new InvalidParameterException();
+        if (result.hasErrors()) {
+            List<ObjectError> allErrors = result.getAllErrors();
+            throw new InvalidParameterException(allErrors);
+        }
 
         return ResponseVO.of()
                 .status(HttpStatus.OK)
