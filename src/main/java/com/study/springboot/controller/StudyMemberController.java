@@ -1,7 +1,9 @@
 package com.study.springboot.controller;
 
+import com.study.springboot.exception.MemberNotFoundException;
 import com.study.springboot.model.exception.ErrorInfo;
 import com.study.springboot.model.exception.ErrorResponse;
+import com.study.springboot.model.mybatis.StudyMember;
 import com.study.springboot.service.StudyMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/study")
@@ -45,10 +48,14 @@ public class StudyMemberController {
 //    }
 
 
+    // Request Handler Method...
     @GetMapping("/members/{member_id}")
-    public List<String> members(@PathVariable("member_id") int memberSeq) {
+    public StudyMember members(@PathVariable("member_id") int memberSeq) {
         System.out.println("memberSeq = " + memberSeq);
-        return studyMemberService.getMemberListWithNameAndSeq();
+
+        Optional<StudyMember> member = studyMemberService.getMemberBySeq(memberSeq);
+
+        return member.orElseThrow(MemberNotFoundException::new);
     }
 
 
@@ -66,4 +73,21 @@ public class StudyMemberController {
                 .errorInfo(ErrorInfo.INVALID_PARAMETER.getInfo())
                 .build();
     }
+
+    @ExceptionHandler // 자기가 있는 class에서 동작
+    public ErrorResponse handleMemberNotFoundException(MemberNotFoundException e) {
+        return ErrorResponse.of()
+                .timestamp(LocalDateTime.now())
+                .errorInfo(ErrorInfo.DATA_NOT_FOUND.getInfo())
+                .build();
+    }
+
+    @ExceptionHandler // 자기가 있는 class에서 동작
+    public ErrorResponse handleAllException(Exception e) {
+        return ErrorResponse.of()
+                .timestamp(LocalDateTime.now())
+                .errorInfo(ErrorInfo.NO_IDENTIFIED_ERROR.getInfo())
+                .build();
+    }
+
 }

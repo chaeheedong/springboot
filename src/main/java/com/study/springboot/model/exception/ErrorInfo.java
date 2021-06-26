@@ -2,6 +2,7 @@ package com.study.springboot.model.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ public enum ErrorInfo {
 
     DATA_NOT_FOUND("E400", "해당 데이터 조회에 실패하였습니다."),
     INVALID_PARAMETER("E401", "잘못된 요청 정보 입니다."),
+    NO_IDENTIFIED_ERROR("E999", "서비스 처리중 오류가 발생했습니다."),
     ;
 
     private String errorCode;
