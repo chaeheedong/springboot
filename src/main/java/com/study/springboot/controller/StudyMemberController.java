@@ -1,12 +1,17 @@
 package com.study.springboot.controller;
 
+import com.study.springboot.exception.InvalidParameterException;
 import com.study.springboot.exception.MemberNotFoundException;
 import com.study.springboot.model.exception.ErrorInfo;
 import com.study.springboot.model.exception.ErrorResponse;
 import com.study.springboot.model.mybatis.StudyMember;
+import com.study.springboot.model.response.ResponseVO;
 import com.study.springboot.service.StudyMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -56,6 +61,22 @@ public class StudyMemberController {
         Optional<StudyMember> member = studyMemberService.getMemberBySeq(memberSeq);
 
         return member.orElseThrow(MemberNotFoundException::new);
+    }
+
+    // Request Handler Method...
+    @PostMapping("/members")
+    public ResponseVO memberJoin(@Validated StudyMember studyMember, BindingResult result) {
+
+        // @Validated
+        // BindingResult result
+        // @NonNull, @Range등 조건이 부합하면 이쪽으로 들어옴
+        if (result.hasErrors())
+            throw new InvalidParameterException();
+
+        return ResponseVO.of()
+                .status(HttpStatus.OK)
+                .message("정상적으로 등록되었습니다.") // 나중에 enum으로
+                .build();
     }
 
     // =======================================================================

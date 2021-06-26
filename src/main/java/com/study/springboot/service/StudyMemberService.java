@@ -5,6 +5,7 @@ import com.study.springboot.repository.mybatis.StudyMemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,15 +17,17 @@ public class StudyMemberService {
     private final StudyMemberMapper studyMemberMapper;
 
     public List<String> getMemberListWithNameAndSeq() {
-        List<StudyMember> memberList = studyMemberMapper.selectAll();
+//        List<StudyMember> memberList = studyMemberMapper.selectAll();
+//
+//        return memberList.stream()
+//                .map( member -> {
+//                    int seq = member.getMemberSeq();
+//                    String name = member.getMemberName();
+//                    return name + seq;
+//                })
+//                .collect(Collectors.toList());
 
-        return memberList.stream()
-                .map( member -> {
-                    int seq = member.getMemberSeq();
-                    String name = member.getMemberName();
-                    return name + seq;
-                })
-                .collect(Collectors.toList());
+        return Arrays.asList("");
     }
 
     public Optional<StudyMember> getMemberBySeq(int numberSeq) {
